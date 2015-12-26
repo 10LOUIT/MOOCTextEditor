@@ -1,5 +1,6 @@
 package document;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /** 
@@ -30,7 +31,16 @@ public class BasicDocument extends Document
 	{
 		//TODO: Implement this method.  See the Module 1 support videos 
 	    // if you need help.
-	    return 0;
+		// assign text
+		List<String> tokens = getTokens("[a-zA-Z]+");
+		
+		if(tokens == null)
+			return 0;
+		else
+		{
+			//System.out.println("Number of words: " + tokens.size());
+			return tokens.size();
+		}
 	}
 	
 	/**
@@ -46,7 +56,16 @@ public class BasicDocument extends Document
 	{
 	    //TODO: Implement this method.  See the Module 1 support videos 
         // if you need help.
-        return 0;
+		List<String> tokens = getTokens("[^!?.]+");
+		
+		if(tokens == null)
+			return 0;
+		else
+		{
+			//System.out.println("Number of sentences: " + tokens.size());
+			
+			return tokens.size();
+		}
 	}
 	
 	/**
@@ -62,12 +81,21 @@ public class BasicDocument extends Document
 	{
 	    //TODO: Implement this method.  See the Module 1 support videos 
         // if you need help.
-        return 0;
+		int numSyllables = 0;
+		List<String> words = getTokens("[a-zA-Z]+");
+		
+		for(String word : words)
+		{
+			numSyllables += countSyllables(word);
+			//System.out.println(word);
+		}
+		return numSyllables;
 	}
 	
 	
 	/* The main method for testing this class. 
 	 * You are encouraged to add your own tests.  */
+	
 	public static void main(String[] args)
 	{
 		testCase(new BasicDocument("This is a test.  How many???  "
@@ -86,7 +114,6 @@ public class BasicDocument extends Document
 		testCase(new BasicDocument("Sentences?!"), 3, 1, 1);
 		testCase(new BasicDocument("Lorem ipsum dolor sit amet, qui ex choro quodsi moderatius, nam dolores explicari forensibus ad."),
 		         32, 15, 1);
-		
 		
 	}
 	

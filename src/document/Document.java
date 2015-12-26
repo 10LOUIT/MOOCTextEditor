@@ -5,6 +5,7 @@ package document;
  * @author UC San Diego Intermediate Programming MOOC team
  */
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -53,7 +54,21 @@ public abstract class Document {
 		// TODO: Implement this method so that you can call it from the 
 	    // getNumSyllables method in BasicDocument (module 1) and 
 	    // EfficientDocument (module 2).
-	    return 0;
+
+		Pattern wordSplitter = Pattern.compile("[aeiouyAEIOUY]+");
+		Matcher m = wordSplitter.matcher(word);
+
+		Integer vowelGroupCount = 0;
+
+		while (m.find()) {
+			vowelGroupCount++;
+		}
+
+		if(word.endsWith("e") && vowelGroupCount > 1){
+			vowelGroupCount -= 1;
+		}
+
+	    return vowelGroupCount;
 	}
 	
 	/** A method for testing
@@ -94,6 +109,7 @@ public abstract class Document {
 		else {
 			System.out.println("FAILED.\n");
 		}
+		
 		return passed;
 	}
 	
@@ -117,7 +133,12 @@ public abstract class Document {
 	public double getFleschScore()
 	{
 	    // TODO: Implement this method
-	    return 0.0;
+		double wordsPerSentences = (double)getNumWords()/(double)getNumSentences();
+		double syllablesPerWords = (double)getNumSyllables()/(double)getNumWords();
+
+		double fleschScore = 206.835 - 1.015*wordsPerSentences - 84.6*syllablesPerWords;
+
+	    return fleschScore;
 	}
 	
 	
