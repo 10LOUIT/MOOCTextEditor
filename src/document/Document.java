@@ -5,7 +5,6 @@ package document;
  * @author UC San Diego Intermediate Programming MOOC team
  */
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -46,29 +45,29 @@ public abstract class Document {
 	// This is a helper function that returns the number of syllables
 	// in a word.  You should write this and use it in your 
 	// BasicDocument class.
-	// You will probably NOT need to add a countWords or a countSentences method
-	// here.  The reason we put countSyllables here because we'll use it again
-	// next week when we implement the EfficientDocument class.
-	protected int countSyllables(String word)
+	protected static int countSyllables(String word)
 	{
-		// TODO: Implement this method so that you can call it from the 
-	    // getNumSyllables method in BasicDocument (module 1) and 
-	    // EfficientDocument (module 2).
-
-		Pattern wordSplitter = Pattern.compile("[aeiouyAEIOUY]+");
-		Matcher m = wordSplitter.matcher(word);
-
-		Integer vowelGroupCount = 0;
-
-		while (m.find()) {
-			vowelGroupCount++;
+	    //System.out.print("Counting syllables in " + word + "...");
+		int numSyllables = 0;
+		boolean newSyllable = true;
+		String vowels = "aeiouy";
+		char[] cArray = word.toCharArray();
+		for (int i = 0; i < cArray.length; i++)
+		{
+		    if (i == cArray.length-1 && Character.toLowerCase(cArray[i]) == 'e' 
+		    		&& newSyllable && numSyllables > 0) {
+                numSyllables--;
+            }
+		    if (newSyllable && vowels.indexOf(Character.toLowerCase(cArray[i])) >= 0) {
+				newSyllable = false;
+				numSyllables++;
+			}
+			else if (vowels.indexOf(Character.toLowerCase(cArray[i])) < 0) {
+				newSyllable = true;
+			}
 		}
-
-		if(word.endsWith("e") && vowelGroupCount > 1){
-			vowelGroupCount -= 1;
-		}
-
-	    return vowelGroupCount;
+		//System.out.println( "found " + numSyllables);
+		return numSyllables;
 	}
 	
 	/** A method for testing
@@ -109,7 +108,6 @@ public abstract class Document {
 		else {
 			System.out.println("FAILED.\n");
 		}
-		
 		return passed;
 	}
 	
@@ -132,13 +130,10 @@ public abstract class Document {
 	/** return the Flesch readability score of this document */
 	public double getFleschScore()
 	{
-	    // TODO: Implement this method
-		double wordsPerSentences = (double)getNumWords()/(double)getNumSentences();
-		double syllablesPerWords = (double)getNumSyllables()/(double)getNumWords();
-
-		double fleschScore = 206.835 - 1.015*wordsPerSentences - 84.6*syllablesPerWords;
-
-	    return fleschScore;
+		double wordCount = (double)getNumWords();
+		return 206.835 - (1.015 * ((wordCount)/getNumSentences())) 
+				- (84.6 * (((double)getNumSyllables())/wordCount));
+	
 	}
 	
 	

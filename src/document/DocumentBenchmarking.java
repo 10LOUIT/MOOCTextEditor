@@ -37,6 +37,15 @@ public class DocumentBenchmarking {
 		// TODO: Fill in the rest of this method so that it runs two loops
 		// and prints out timing results as described in the assignment 
 		// instructions.
+		
+		String characters;
+		double fleschScore;
+		long startTime;
+		long endTime;
+		
+		// print out header
+		System.out.print("Size" + "\t" + "BasicDocument" + "\t"+ "EfficientDocument" + "\n");
+		
 		for (int numToCheck = start; numToCheck < numSteps*increment + start; 
 				numToCheck += increment)
 		{
@@ -58,7 +67,27 @@ public class DocumentBenchmarking {
 			 * 6. Print out the time it took to complete the loop in step 5 
 			 *      (on the same line as the first print statement) followed by a newline (\n) 
 			 */  
+			 System.out.print(numToCheck + "\t\t");
+			 characters = getStringFromFile(textfile, numToCheck);
+			 startTime = System.nanoTime();
 			 
+			 for (int i = 0; i < trials; i++)
+				{
+					BasicDocument sample = new BasicDocument(characters);
+					fleschScore = sample.getFleschScore();
+				}
+			 	endTime = System.nanoTime();
+				double time = (endTime - startTime) / 1000000000.0;
+				System.out.print(time + "\t");
+				startTime = System.nanoTime();
+				for (int i = 0; i < trials; i++)
+				{
+					EfficientDocument sample = new EfficientDocument(characters);
+					fleschScore = sample.getFleschScore();
+				}
+				endTime = System.nanoTime();
+				time = (endTime - startTime) / 1000000000.0;
+				System.out.print(time + "\n");
 		}
 	
 	}

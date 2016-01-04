@@ -45,6 +45,24 @@ public class EfficientDocument extends Document {
 		
 		// TODO: Finish this method.  Remember the countSyllables method from 
 		// Document.  That will come in handy here.
+		
+		int wordCounter = 0;
+		int sentenceCounter = 0;
+		int syllablesCounter = 0;
+		
+		for (String word : tokens) {
+			if (isWord(word)) {
+				wordCounter++;
+				syllablesCounter += countSyllables(word);
+			} else {
+				sentenceCounter++;
+			}
+		}
+		
+		this.numSyllables = syllablesCounter;
+		this.numWords = wordCounter;
+		this.numSentences = sentenceCounter;
+		
 	}
 	
 	
@@ -58,7 +76,8 @@ public class EfficientDocument extends Document {
 	@Override
 	public int getNumWords() {
 		//TODO: write this method.  Hint: It's simple
-	    return 0;
+		
+		return this.numWords;
 	}
 
 	/**
@@ -72,8 +91,10 @@ public class EfficientDocument extends Document {
 	@Override
 	public int getNumSentences() {
         //TODO: write this method.  Hint: It's simple
-        return 0;
-	}
+		
+		return this.numSentences;
+		
+		}
 
 	/**
 	 * Get the number of syllables in the document.
@@ -86,7 +107,9 @@ public class EfficientDocument extends Document {
 	@Override
 	public int getNumSyllables() {
         //TODO: write this method.  Hint: It's simple
-        return 0;
+		
+		return this.numSyllables;
+		
 	}
 	
 	// Can be used for testing
@@ -109,6 +132,7 @@ public class EfficientDocument extends Document {
 		testCase(new EfficientDocument("Sentences?!"), 3, 1, 1);
 		testCase(new EfficientDocument("Lorem ipsum dolor sit amet, qui ex choro quodsi moderatius, nam dolores explicari forensibus ad."),
 		         32, 15, 1);
+		testCase(new EfficientDocument("This is a sentences of 6 words."), 8, 6, 1);
 		
 	}
 	
